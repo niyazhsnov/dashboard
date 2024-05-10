@@ -223,8 +223,8 @@ const EditCategoryModal: FC = function () {
   return (
     <>
       <Button color="primary" onClick={() => setOpen(!isOpen)}>
-        <HiPencilAlt className="mr-2 text-lg" />
-        Edit item
+        <HiPencilAlt className=" text-lg" />
+
       </Button>
       <Modal onClose={() => setOpen(false)} show={isOpen}>
         <Modal.Header className="border-b border-gray-200 !p-6 dark:border-gray-700">
@@ -282,33 +282,21 @@ const EditCategoryModal: FC = function () {
               </div>
               <div className="flex space-x-5">
                 <div>
-                  <img
-                    alt="Apple iMac 1"
-                    src="/images/categories/apple-imac-1.png"
-                    className="h-24"
-                  />
+                
                   <a href="#" className="cursor-pointer">
                     <span className="sr-only">Delete</span>
                     <HiTrash className="-mt-5 text-2xl text-red-600" />
                   </a>
                 </div>
                 <div>
-                  <img
-                    alt="Apple iMac 2"
-                    src="/images/categories/apple-imac-2.png"
-                    className="h-24"
-                  />
+                 
                   <a href="#" className="cursor-pointer">
                     <span className="sr-only">Delete</span>
                     <HiTrash className="-mt-5 text-2xl text-red-600" />
                   </a>
                 </div>
                 <div>
-                  <img
-                    alt="Apple iMac 3"
-                    src="/images/categories/apple-imac-3.png"
-                    className="h-24"
-                  />
+                 
                   <a href="#" className="cursor-pointer">
                     <span className="sr-only">Delete</span>
                     <HiTrash className="-mt-5 text-2xl text-red-600" />
@@ -350,8 +338,7 @@ const DeleteCategoryModal: FC = function () {
   return (
     <>
       <Button color="failure" onClick={() => setOpen(!isOpen)}>
-        <HiTrash className="mr-2 text-lg" />
-        Delete item
+        <HiTrash className=" text-lg" />
       </Button>
       <Modal onClose={() => setOpen(false)} show={isOpen} size="md">
         <Modal.Header className="px-3 pt-3 pb-0">
@@ -382,15 +369,19 @@ const CategoriesTable: FC<{ categories: any[] }> = function ({ categories }) {
   return (
     <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
       <Table.Head className="bg-gray-100 dark:bg-gray-700">
+      <Table.HeadCell>ID</Table.HeadCell>
         <Table.HeadCell>Category Name</Table.HeadCell>
         <Table.HeadCell>Icon Name</Table.HeadCell>
-        <Table.HeadCell>ID</Table.HeadCell>
+     
         <Table.HeadCell>Update Date</Table.HeadCell>
         <Table.HeadCell>Actions</Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
         {categories.map((category) => (
           <Table.Row key={category.id}>
+              <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
+              {category.id}
+            </Table.Cell>
             <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
               <div className="text-base font-semibold text-gray-900 dark:text-white">
                 {category.name}
@@ -399,9 +390,7 @@ const CategoriesTable: FC<{ categories: any[] }> = function ({ categories }) {
             <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
               {category.icon}
             </Table.Cell>
-            <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
-              {category.id}
-            </Table.Cell>
+          
             <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
               {category.updated_at}
             </Table.Cell>

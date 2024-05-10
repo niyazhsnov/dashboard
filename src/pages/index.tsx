@@ -253,11 +253,7 @@ const LatestCustomers: FC = function () {
           <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
               <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/neil-sims.png"
-                  alt=""
-                />
+                
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
@@ -275,11 +271,7 @@ const LatestCustomers: FC = function () {
           <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
               <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/bonnie-green.png"
-                  alt=""
-                />
+              
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
@@ -297,11 +289,7 @@ const LatestCustomers: FC = function () {
           <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
               <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/michael-gough.png"
-                  alt=""
-                />
+              
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
@@ -319,11 +307,7 @@ const LatestCustomers: FC = function () {
           <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
               <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/thomas-lean.png"
-                  alt=""
-                />
+                
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
@@ -341,11 +325,7 @@ const LatestCustomers: FC = function () {
           <li className="py-3 sm:py-4">
             <div className="flex items-center space-x-4">
               <div className="shrink-0">
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="/images/users/lana-byrd.png"
-                  alt=""
-                />
+               
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-gray-900 dark:text-white">

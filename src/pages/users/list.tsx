@@ -313,7 +313,7 @@ const EditUserModal: FC<{ user: User }> = function ({ user }) {
       <Button color="primary" onClick={() => setOpen(true)}>
         <div className="flex items-center gap-x-2">
           <HiOutlinePencilAlt className="text-lg" />
-          Edit user
+    
         </div>
       </Button>
       <Modal onClose={() => setOpen(false)} show={isOpen}>
@@ -398,7 +398,6 @@ const DeleteUserModal: FC<DeleteUserModalProps> = function ({ userId, onDelete }
       <Button color="failure" onClick={() => setOpen(true)}>
         <div className="flex items-center gap-x-2">
           <HiTrash className="text-lg" />
-          Delete user
         </div>
       </Button>
       <Modal onClose={() => setOpen(false)} show={isOpen} size="md">
