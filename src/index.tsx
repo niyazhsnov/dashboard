@@ -9,7 +9,9 @@ import DashboardPage from "./pages";
 import SignInPage from "./pages/authentication/sign-in";
 import SignUpPage from "./pages/authentication/sign-up";
 import EcommerceProductsPage from "./pages/e-commerce/products";
+import AdminListPage from "./pages/admins/admin_list";
 import UserListPage from "./pages/users/list";
+import UniversityListPage from './pages/university/list';
 import PrivateRoutes from "./utils/PrivateRoutes";
 const container = document.getElementById("root");
 
@@ -31,6 +33,8 @@ root.render(
             element={<EcommerceProductsPage />}
           />
           <Route path="/users/list" element={<UserListPage />} />
+          <Route path="/university/list" element={<UniversityListPage />} />
+          <Route path="/admins/list" element={<AdminListPage />} />
         </Route>
         <Route path="/login" element={<SignInPage />} />
         <Route path="/register" element={<SignUpPage />} />

@@ -148,9 +148,13 @@ const AddUserModal: FC = function () {
     } else {
       setError(null);
     }
-
+        
     try {
-      await axios.post('https://telebe360.elxanhuseynli.com/api/users', formData);
+      await axios.post('https://telebe360.elxanhuseynli.com/api/users', formData ,
+      {
+        headers:{ Authorization: `Bearer ${Cookies.get('token')}` }
+      })
+      
       toast.success('User added successfully');
       setOpen(false);
       window.location.reload();

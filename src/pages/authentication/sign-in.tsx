@@ -14,7 +14,7 @@ const SignInPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://telebe360.elxanhuseynli.com/api/login', {
+      const response = await axios.post('https://telebe360.elxanhuseynli.com/api/login-admin', {
         email: email,
         password: password
       });

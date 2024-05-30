@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import type { FC } from "react";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import {
   HiCog,
@@ -98,7 +98,7 @@ const EcommerceCategoriessPage: FC = function () {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
-              <CategoriesTable categories={categories}/>
+              <CategoriesTable categories={categories} />
             </div>
           </div>
         </div>
@@ -282,21 +282,21 @@ const EditCategoryModal: FC = function () {
               </div>
               <div className="flex space-x-5">
                 <div>
-                
+
                   <a href="#" className="cursor-pointer">
                     <span className="sr-only">Delete</span>
                     <HiTrash className="-mt-5 text-2xl text-red-600" />
                   </a>
                 </div>
                 <div>
-                 
+
                   <a href="#" className="cursor-pointer">
                     <span className="sr-only">Delete</span>
                     <HiTrash className="-mt-5 text-2xl text-red-600" />
                   </a>
                 </div>
                 <div>
-                 
+
                   <a href="#" className="cursor-pointer">
                     <span className="sr-only">Delete</span>
                     <HiTrash className="-mt-5 text-2xl text-red-600" />
@@ -369,17 +369,17 @@ const CategoriesTable: FC<{ categories: any[] }> = function ({ categories }) {
   return (
     <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
       <Table.Head className="bg-gray-100 dark:bg-gray-700">
-      <Table.HeadCell>ID</Table.HeadCell>
+        <Table.HeadCell>ID</Table.HeadCell>
         <Table.HeadCell>Category Name</Table.HeadCell>
         <Table.HeadCell>Icon Name</Table.HeadCell>
-     
+
         <Table.HeadCell>Update Date</Table.HeadCell>
         <Table.HeadCell>Actions</Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
         {categories.map((category) => (
           <Table.Row key={category.id}>
-              <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
+            <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
               {category.id}
             </Table.Cell>
             <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
@@ -387,10 +387,17 @@ const CategoriesTable: FC<{ categories: any[] }> = function ({ categories }) {
                 {category.name}
               </div>
             </Table.Cell>
-            <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
-              {category.icon}
+            <Table.Cell className="whitespace-nowrap p-1 text-center font-medium text-gray-900 ">
+              <img
+                src={`http://telebe360.elxanhuseynli.com/images/${category.icon}`}
+                alt={category.icon}
+                className="h-8 w-8 object-contain dark:bg-white mx-4"
+                
+              />
+
             </Table.Cell>
-          
+
+
             <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
               {category.updated_at}
             </Table.Cell>
