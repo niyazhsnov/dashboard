@@ -50,7 +50,7 @@ const SignInPage = () => {
         </span>
         <img
           alt="360logo"
-          src="https://raw.githubusercontent.com/niyazhsnov/telebe360/50f8791d2de971c824ce46b11a2e0be91a845b61/public/home/360minilogo.svg"
+          src='https://raw.githubusercontent.com/niyazhsnov/telebe360/df79ee27ff981a8b108e1fe4cc80faf5e777a149/public/home/360minilogo.svg'
           className="mr-3 h-12"
         />
         
@@ -94,12 +94,12 @@ const SignInPage = () => {
               Login to your account
             </Button>
           </div>
-          <p className="text-sm text-gray-500 dark:text-gray-300">
+          {/* <p className="text-sm text-gray-500 dark:text-gray-300">
             Not registered?&nbsp;
             <a href="/register" className="text-primary-600 dark:text-primary-300">
               Create account
             </a>
-          </p>
+          </p> */}
         </form>
       </Card>
     </div>

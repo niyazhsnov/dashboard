@@ -25,7 +25,7 @@ const ExampleNavbar: FC<ExampleNavbarProps> = ({ isSidebarOpen, setSidebarOpen }
               </span>
               <img
                 alt=""
-                src="https://raw.githubusercontent.com/niyazhsnov/telebe360/50f8791d2de971c824ce46b11a2e0be91a845b61/public/home/360minilogo.svg"
+                src='https://raw.githubusercontent.com/niyazhsnov/telebe360/df79ee27ff981a8b108e1fe4cc80faf5e777a149/public/home/360minilogo.svg'
                 className="mr-3 h-6 sm:h-6"
               />
             </Navbar.Brand>

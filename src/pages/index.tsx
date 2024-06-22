@@ -8,14 +8,14 @@ const DashboardPage: FC = function () {
   return (
     <NavbarSidebarLayout>
       <div className="px-4 pt-6">
-        <SalesThisWeek />
+        {/* <SalesThisWeek />
         <div className="my-6">
           <LatestTransactions />
         </div>
         <LatestCustomers />
         <div className="my-6">
           <AcquisitionOverview />
-        </div>
+        </div> */}
       </div>
     </NavbarSidebarLayout>
   );

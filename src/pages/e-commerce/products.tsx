@@ -1,12 +1,9 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import {
   Breadcrumb,
   Button,
-  Checkbox,
   Label,
   Modal,
   Table,
-  Textarea,
   TextInput,
 } from "flowbite-react";
 import type { FC } from "react";
@@ -17,7 +14,6 @@ import {
   HiDotsVertical,
   HiExclamationCircle,
   HiHome,
-  HiOutlineExclamationCircle,
   HiPencilAlt,
   HiTrash,
   HiUpload,
@@ -28,8 +24,16 @@ import { Pagination } from "../users/list";
 const EcommerceCategoriessPage: FC = function () {
   const [categories, setCategories] = useState([]);
 
+  const getToken = () => {
+    return document.cookie.replace(/(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+  };
+
   useEffect(() => {
-    fetch("https://www.telebe360.elxanhuseynli.com/api/categories")
+    fetch("https://www.telebe360.elxanhuseynli.com/api/categories", {
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      }
+    })
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -89,7 +93,7 @@ const EcommerceCategoriessPage: FC = function () {
               </a>
             </div>
             <div className="flex w-full items-center sm:justify-end">
-              <AddCategoryModal />
+              <AddCategoryModal getToken={getToken} />
             </div>
           </div>
         </div>
@@ -98,7 +102,7 @@ const EcommerceCategoriessPage: FC = function () {
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden shadow">
-              <CategoriesTable categories={categories} />
+              <CategoriesTable categories={categories} getToken={getToken} />
             </div>
           </div>
         </div>
@@ -125,8 +129,42 @@ const SearchForCategories: FC = function () {
   );
 };
 
-const AddCategoryModal: FC = function () {
+const AddCategoryModal: FC<{ getToken: () => string }> = function ({ getToken }) {
   const [isOpen, setOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [slug, setSlug] = useState('');
+  const [icon, setIcon] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setIcon(e.target.files[0]);
+    }
+  };
+
+  const handleAddCategory = () => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('slug', slug);
+    if (icon) {
+      formData.append('icon', icon);
+    }
+
+    fetch("https://www.telebe360.elxanhuseynli.com/api/categories", {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Category added:", data);
+        window.location.reload();
+        setOpen(false);
+        // Refresh categories list or handle the state update
+      })
+      .catch(error => console.error("Error adding category:", error));
+  };
 
   return (
     <>
@@ -146,45 +184,20 @@ const AddCategoryModal: FC = function () {
                 <TextInput
                   id="CategoryName"
                   name="CategoryName"
-                  placeholder='Apple iMac 27"'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter category name"
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="slug">Slug</Label>
                 <TextInput
-                  id="category"
-                  name="category"
-                  placeholder="Electronics"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="brand">Brand</Label>
-                <TextInput
-                  id="brand"
-                  name="brand"
-                  placeholder="Apple"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="price">Price</Label>
-                <TextInput
-                  id="price"
-                  name="price"
-                  type="number"
-                  placeholder="$2300"
-                  className="mt-1"
-                />
-              </div>
-              <div className="lg:col-span-2">
-                <Label htmlFor="producTable.Celletails">Category details</Label>
-                <Textarea
-                  id="producTable.Celletails"
-                  name="producTable.Celletails"
-                  placeholder="e.g. 3.8GHz 8-core 10th-generation Intel Core i7 processor, Turbo Boost up to 5.0GHz, Ram 16 GB DDR4 2300Mhz"
-                  rows={6}
+                  id="slug"
+                  name="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  placeholder="Enter slug"
                   className="mt-1"
                 />
               </div>
@@ -200,7 +213,7 @@ const AddCategoryModal: FC = function () {
                         PNG, JPG, GIF up to 10MB
                       </p>
                     </div>
-                    <input type="file" className="hidden" />
+                    <input type="file" className="hidden" onChange={handleFileChange} />
                   </label>
                 </div>
               </div>
@@ -208,7 +221,7 @@ const AddCategoryModal: FC = function () {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="primary" onClick={() => setOpen(false)}>
+          <Button color="primary" onClick={handleAddCategory}>
             Add Category
           </Button>
         </Modal.Footer>
@@ -217,14 +230,48 @@ const AddCategoryModal: FC = function () {
   );
 };
 
-const EditCategoryModal: FC = function () {
+const EditCategoryModal: FC<{ category: any, getToken: () => string }> = function ({ category, getToken }) {
   const [isOpen, setOpen] = useState(false);
+  const [name, setName] = useState(category.name);
+  const [slug, setSlug] = useState(category.slug);
+  const [icon, setIcon] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setIcon(e.target.files[0]);
+    }
+  };
+
+  const handleEditCategory = () => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('slug', slug);
+    if (icon) {
+      formData.append('icon', icon);
+    }
+
+    fetch(`https://www.telebe360.elxanhuseynli.com/api/categories/${category.id}`, {
+      method: "PUT",
+      headers: {
+        'Authorization': `Bearer ${getToken()}`,
+      },
+      body: formData,
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Category edited:", data);
+        window.location.reload();
+        setOpen(false);
+        // Refresh categories list or handle the state update
+      })
+      .catch(error => console.error("Error editing category:", error));
+  };
 
   return (
     <>
       <Button color="primary" onClick={() => setOpen(!isOpen)}>
-        <HiPencilAlt className=" text-lg" />
-
+        <HiPencilAlt className="" />
+        
       </Button>
       <Modal onClose={() => setOpen(false)} show={isOpen}>
         <Modal.Header className="border-b border-gray-200 !p-6 dark:border-gray-700">
@@ -234,74 +281,26 @@ const EditCategoryModal: FC = function () {
           <form>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <div>
-                <Label htmlFor="productName">Category name</Label>
+                <Label htmlFor="CategoryName">Category name</Label>
                 <TextInput
-                  id="productName"
-                  name="productName"
-                  placeholder='Apple iMac 27"'
+                  id="CategoryName"
+                  name="CategoryName"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter category name"
                   className="mt-1"
                 />
               </div>
               <div>
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="slug">Slug</Label>
                 <TextInput
-                  id="category"
-                  name="category"
-                  placeholder="Electronics"
+                  id="slug"
+                  name="slug"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  placeholder="Enter slug"
                   className="mt-1"
                 />
-              </div>
-              <div>
-                <Label htmlFor="brand">Brand</Label>
-                <TextInput
-                  id="brand"
-                  name="brand"
-                  placeholder="Apple"
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="price">Price</Label>
-                <TextInput
-                  id="price"
-                  name="price"
-                  type="number"
-                  placeholder="$2300"
-                  className="mt-1"
-                />
-              </div>
-              <div className="lg:col-span-2">
-                <Label htmlFor="CategoryDetails">Category details</Label>
-                <Textarea
-                  id="CategoryDetails"
-                  name="CategoryDetails"
-                  placeholder="e.g. 3.8GHz 8-core 10th-generation Intel Core i7 processor, Turbo Boost up to 5.0GHz, Ram 16 GB DDR4 2300Mhz"
-                  rows={6}
-                  className="mt-1"
-                />
-              </div>
-              <div className="flex space-x-5">
-                <div>
-
-                  <a href="#" className="cursor-pointer">
-                    <span className="sr-only">Delete</span>
-                    <HiTrash className="-mt-5 text-2xl text-red-600" />
-                  </a>
-                </div>
-                <div>
-
-                  <a href="#" className="cursor-pointer">
-                    <span className="sr-only">Delete</span>
-                    <HiTrash className="-mt-5 text-2xl text-red-600" />
-                  </a>
-                </div>
-                <div>
-
-                  <a href="#" className="cursor-pointer">
-                    <span className="sr-only">Delete</span>
-                    <HiTrash className="-mt-5 text-2xl text-red-600" />
-                  </a>
-                </div>
               </div>
               <div className="lg:col-span-2">
                 <div className="flex w-full items-center justify-center">
@@ -315,7 +314,7 @@ const EditCategoryModal: FC = function () {
                         PNG, JPG, GIF up to 10MB
                       </p>
                     </div>
-                    <input type="file" className="hidden" />
+                    <input type="file" className="hidden" onChange={handleFileChange} />
                   </label>
                 </div>
               </div>
@@ -323,8 +322,8 @@ const EditCategoryModal: FC = function () {
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="primary" onClick={() => setOpen(false)}>
-            Save all
+          <Button color="primary" onClick={handleEditCategory}>
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -332,79 +331,59 @@ const EditCategoryModal: FC = function () {
   );
 };
 
-const DeleteCategoryModal: FC = function () {
-  const [isOpen, setOpen] = useState(false);
+const CategoriesTable: FC<{ categories: any[], getToken: () => string }> = function ({ categories, getToken }) {
+  const handleDeleteCategory = (id: string) => {
+    if (confirm('Are you sure you want to delete this category?')) {
+      fetch(`https://www.telebe360.elxanhuseynli.com/api/categories/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${getToken()}`,
+        },
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Category deleted');
+            window.location.reload();
+            // Refresh categories list or handle the state update
+          } else {
+            console.error('Error deleting category:', response.statusText);
+          }
+        })
+        .catch(error => console.error('Error deleting category:', error));
+    }
+  };
 
-  return (
-    <>
-      <Button color="failure" onClick={() => setOpen(!isOpen)}>
-        <HiTrash className=" text-lg" />
-      </Button>
-      <Modal onClose={() => setOpen(false)} show={isOpen} size="md">
-        <Modal.Header className="px-3 pt-3 pb-0">
-          <span className="sr-only">Delete Category</span>
-        </Modal.Header>
-        <Modal.Body className="px-6 pb-6 pt-0">
-          <div className="flex flex-col items-center gap-y-6 text-center">
-            <HiOutlineExclamationCircle className="text-7xl text-red-600" />
-            <p className="text-lg text-gray-500 dark:text-gray-300">
-              Are you sure you want to delete this Category?
-            </p>
-            <div className="flex items-center gap-x-3">
-              <Button color="failure" onClick={() => setOpen(false)}>
-                Yes, I'm sure
-              </Button>
-              <Button color="gray" onClick={() => setOpen(false)}>
-                No, cancel
-              </Button>
-            </div>
-          </div>
-        </Modal.Body>
-      </Modal>
-    </>
-  );
-};
-
-const CategoriesTable: FC<{ categories: any[] }> = function ({ categories }) {
   return (
     <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
       <Table.Head className="bg-gray-100 dark:bg-gray-700">
-        <Table.HeadCell>ID</Table.HeadCell>
-        <Table.HeadCell>Category Name</Table.HeadCell>
-        <Table.HeadCell>Icon Name</Table.HeadCell>
-
-        <Table.HeadCell>Update Date</Table.HeadCell>
+      <Table.HeadCell>ID</Table.HeadCell>
+        <Table.HeadCell>Category name</Table.HeadCell>
+        <Table.HeadCell>Slug</Table.HeadCell>
+        <Table.HeadCell>Icon</Table.HeadCell>
         <Table.HeadCell>Actions</Table.HeadCell>
       </Table.Head>
-      <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
+      <Table.Body className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
         {categories.map((category) => (
-          <Table.Row key={category.id}>
-            <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
+          <Table.Row key={category.id} className="bg-white dark:bg-gray-800">
+             <Table.Cell className="whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
               {category.id}
             </Table.Cell>
-            <Table.Cell className="whitespace-nowrap p-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-              <div className="text-base font-semibold text-gray-900 dark:text-white">
-                {category.name}
-              </div>
+            <Table.Cell className="whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+              {category.name}
             </Table.Cell>
-            <Table.Cell className="whitespace-nowrap p-1 text-center font-medium text-gray-900 ">
-              <img
-                src={`http://telebe360.elxanhuseynli.com/images/${category.icon}`}
-                alt={category.icon}
-                className="h-8 w-8 object-contain dark:bg-white mx-4"
+            <Table.Cell className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              {category.slug}
+            </Table.Cell>
+            <Table.Cell className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              <img src={`https://telebe360.elxanhuseynli.com/storage/images/icons/${category.icon}`} alt={category.name} className="h-8 w-8 object-contain dark:bg-white "/>
+            </Table.Cell>
+            <Table.Cell className="whitespace-nowrap text-sm font-medium">
+              <div className="flex space-x-4">
+                <EditCategoryModal category={category} getToken={getToken} />
+                <Button color="failure" onClick={() => handleDeleteCategory(category.id)}>
+                  <HiTrash className="" />
                 
-              />
-
-            </Table.Cell>
-
-
-            <Table.Cell className="whitespace-nowrap p-4 text-base font-medium text-gray-900 dark:text-white">
-              {category.updated_at}
-            </Table.Cell>
-            <Table.Cell className="space-x-2 whitespace-nowrap p-4">
-              <div className="flex items-center gap-x-3">
-                <EditCategoryModal />
-                <DeleteCategoryModal />
+                </Button>
               </div>
             </Table.Cell>
           </Table.Row>
@@ -413,4 +392,5 @@ const CategoriesTable: FC<{ categories: any[] }> = function ({ categories }) {
     </Table>
   );
 };
+
 export default EcommerceCategoriessPage;
