@@ -332,65 +332,94 @@ const EditCategoryModal: FC<{ category: any, getToken: () => string }> = functio
 };
 
 const CategoriesTable: FC<{ categories: any[], getToken: () => string }> = function ({ categories, getToken }) {
-  const handleDeleteCategory = (id: string) => {
-    if (confirm('Are you sure you want to delete this category?')) {
-      fetch(`https://www.telebe360.elxanhuseynli.com/api/categories/${id}`, {
-        method: 'DELETE',
+  const [selectedCategory, setSelectedCategory] = useState<any | null>(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const handleDeleteCategory = (category: any) => {
+    setSelectedCategory(category);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDeleteCategory = () => {
+    if (selectedCategory) {
+      fetch(`https://www.telebe360.elxanhuseynli.com/api/categories/${selectedCategory.id}`, {
+        method: "DELETE",
         headers: {
           'Authorization': `Bearer ${getToken()}`,
-        },
+        }
       })
-        .then(response => {
-          if (response.ok) {
-            console.log('Category deleted');
-            window.location.reload();
-            // Refresh categories list or handle the state update
-          } else {
-            console.error('Error deleting category:', response.statusText);
-          }
+        .then(response => response.json() &&
+        window.location.reload()
+            
+      )
+        .then(data => {
+          console.log("Category deleted:", data);
+          window.location.reload(); // veya kategori listesini güncelleme işlemi
+          setDeleteModalOpen(false);
         })
-        .catch(error => console.error('Error deleting category:', error));
+        .catch(error => console.error("Error deleting category:", error));
     }
   };
 
   return (
-    <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
-      <Table.Head className="bg-gray-100 dark:bg-gray-700">
-      <Table.HeadCell>ID</Table.HeadCell>
-        <Table.HeadCell>Category name</Table.HeadCell>
-        <Table.HeadCell>Slug</Table.HeadCell>
-        <Table.HeadCell>Icon</Table.HeadCell>
-        <Table.HeadCell>Actions</Table.HeadCell>
-      </Table.Head>
-      <Table.Body className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-        {categories.map((category) => (
-          <Table.Row key={category.id} className="bg-white dark:bg-gray-800">
-             <Table.Cell className="whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-              {category.id}
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-              {category.name}
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-              {category.slug}
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-              <img src={`https://telebe360.elxanhuseynli.com/storage/images/icons/${category.icon}`} alt={category.name} className="h-8 w-8 object-contain dark:bg-white "/>
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap text-sm font-medium">
-              <div className="flex space-x-4">
-                <EditCategoryModal category={category} getToken={getToken} />
-                <Button color="failure" onClick={() => handleDeleteCategory(category.id)}>
-                  <HiTrash className="" />
-                
-                </Button>
-              </div>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
+    <>
+      <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+        <Table.Head className="bg-gray-100 dark:bg-gray-700">
+          <Table.HeadCell>ID</Table.HeadCell>
+          <Table.HeadCell>Category name</Table.HeadCell>
+          <Table.HeadCell>Slug</Table.HeadCell>
+          <Table.HeadCell>Icon</Table.HeadCell>
+          <Table.HeadCell>Actions</Table.HeadCell>
+        </Table.Head>
+        <Table.Body className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+          {categories.map((category) => (
+            <Table.Row key={category.id} className="bg-white dark:bg-gray-800">
+              <Table.Cell className="whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                {category.id}
+              </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                {category.name}
+              </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                {category.slug}
+              </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                <img src={`https://telebe360.elxanhuseynli.com/storage/images/icons/${category.icon}`} alt={category.name} className="h-8 w-8 object-contain dark:bg-white " />
+              </Table.Cell>
+              <Table.Cell className="whitespace-nowrap text-sm font-medium">
+                <div className="flex space-x-4">
+                  <EditCategoryModal category={category} getToken={getToken} />
+                  <Button color="failure" onClick={() => handleDeleteCategory(category)}>
+                    <HiTrash className="" />
+                  </Button>
+                </div>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+      
+      {selectedCategory && (
+        <Modal show={isDeleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
+          <Modal.Header className="border-b border-gray-200 !p-6 dark:border-gray-700">
+            <strong>Confirm Delete</strong>
+          </Modal.Header>
+          <Modal.Body>
+           <p className="dark:text-white"> Are you sure you want to delete the category "{selectedCategory.name}"?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button color="failure" onClick={confirmDeleteCategory}>
+              Confirm
+            </Button>
+            <Button color="gray" onClick={() => setDeleteModalOpen(false)}>
+              Cancel
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      )}
+    </>
   );
 };
+
 
 export default EcommerceCategoriessPage;
