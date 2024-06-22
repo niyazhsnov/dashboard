@@ -251,7 +251,7 @@ const EditCategoryModal: FC<{ category: any, getToken: () => string }> = functio
     }
 
     fetch(`https://www.telebe360.elxanhuseynli.com/api/categories/${category.id}`, {
-      method: "PUT",
+      method: "POST",
       headers: {
         'Authorization': `Bearer ${getToken()}`,
       },
