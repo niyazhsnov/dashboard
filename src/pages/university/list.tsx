@@ -186,7 +186,7 @@ const AddCategoryModal: FC<{ token: string }> = function ({ token }) {
         </Modal.Body>
         <Modal.Footer>
           <Button color="primary" onClick={handleAddCategory}>
-            Add Category
+            Add University
           </Button>
         </Modal.Footer>
       </Modal>

@@ -255,6 +255,7 @@ import {
     return (
       <Table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
         <Table.Head className="bg-gray-100 dark:bg-gray-700">
+      <Table.HeadCell>ID</Table.HeadCell>
           <Table.HeadCell>Name</Table.HeadCell>
           <Table.HeadCell>Email</Table.HeadCell>
           <Table.HeadCell>Email Verified At</Table.HeadCell>
@@ -264,6 +265,7 @@ import {
         <Table.Body className="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
           {users.map(user => (
             <Table.Row key={user.id}>
+              <Table.Cell>{user.id}</Table.Cell>
               <Table.Cell>{user.name}</Table.Cell>
               <Table.Cell>{user.email}</Table.Cell>
               <Table.Cell>{user.email_verified_at}</Table.Cell>

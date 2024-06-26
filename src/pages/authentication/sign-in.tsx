@@ -9,7 +9,7 @@ const SignInPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const inFifteenMinutes = new Date(new Date().getTime() + 15 * 60 * 1000);
+  const inFifteenMinutes = new Date(new Date().getTime() + 150 * 60 * 1000);
   const handleLogin = async (e:any) => {
     e.preventDefault();
 

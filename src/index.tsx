@@ -12,6 +12,8 @@ import EcommerceProductsPage from "./pages/e-commerce/products";
 import AdminListPage from "./pages/admins/admin_list";
 import UserListPage from "./pages/users/list";
 import UniversityListPage from './pages/university/list';
+import CompaniesListPage from './pages/companies/companies';
+import BannerListPage from './pages/banners/banners';
 import PrivateRoutes from "./utils/PrivateRoutes";
 const container = document.getElementById("root");
 
@@ -35,6 +37,9 @@ root.render(
           <Route path="/users/list" element={<UserListPage />} />
           <Route path="/university/list" element={<UniversityListPage />} />
           <Route path="/admins/list" element={<AdminListPage />} />
+          <Route path="/companies/list" element={<CompaniesListPage />} />
+          <Route path="/banners/list" element={<BannerListPage />} />
+
         </Route>
         <Route path="/login" element={<SignInPage />} />
         <Route path="/register" element={<SignUpPage />} />
