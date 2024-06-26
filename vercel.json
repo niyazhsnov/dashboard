@@ -4,6 +4,8 @@
       { "src": "/register", "dest": "/" },
       { "src": "/categories", "dest": "/" },
       { "src": "/users/list", "dest": "/" },
+      { "src": "/companies/list", "dest": "/" },
+      { "src": "/banners/list", "dest": "/" },
       { "src": "/university/list", "dest": "/" },
       { "src": "/admins/list", "dest": "/" }
     ]
